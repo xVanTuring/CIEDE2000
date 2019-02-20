@@ -4,4 +4,6 @@
 *.o
 *.dSYM
 testCIEDE2000
-
+build
+.ccls*
+compile_commands.json

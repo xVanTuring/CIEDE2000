@@ -1,0 +1,5 @@
+cmake_minimum_required(VERSION 2.8)
+set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
+add_library(libCIEDE2000 CIEDE2000.cpp CIEDE2000.h)
+add_executable(testCIEDE2000 testCIEDE2000.cpp)
+target_link_libraries(testCIEDE2000 libCIEDE2000)
