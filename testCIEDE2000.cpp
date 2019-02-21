@@ -19,20 +19,27 @@
  */
 int testCIEDE2000();
 void testRGB2LAB() {
-  double l_s = 0;
-  double a_s = 0;
-  double b_s = 0;
-  CIEDE2000::rgb2Lab(60, 0, 0, l_s, a_s, b_s);
-  std::cout << std::setprecision(15) << "Result: " << l_s << " " << a_s << " "
-            << b_s << std::endl;
-  CIEDE2000::rgb2Lab(60, 80, 0, l_s, a_s, b_s);
-  std::cout << std::setprecision(15) << "Result: " << l_s << " " << a_s << " "
-            << b_s << std::endl;
+  CIEDE2000::RGB rgb = {60, 0, 0};
+  CIEDE2000::LAB lab;
+  CIEDE2000::rgb2Lab(rgb, lab);
+  std::cout << std::setprecision(15) << "Result: " << lab.l << " " << lab.a
+            << " " << lab.b << std::endl;
+  rgb.r = 80;
+  CIEDE2000::rgb2Lab(rgb, lab);
+  std::cout << std::setprecision(15) << "Result: " << lab.l << " " << lab.a
+            << " " << lab.b << std::endl;
+}
+void testRGBCIDE2K() {
+  CIEDE2000::RGB color1 = {60, 20, 128};
+  CIEDE2000::RGB color2 = {70, 30, 129};
+  std::cout << std::setprecision(15) << CIEDE2000::CIEDE2000(color1, color2)
+            << std::endl;
 }
 int main(int argc, char *argv[]) {
-  //
+  testCIEDE2000();
   testRGB2LAB();
-  return (testCIEDE2000());
+  testRGBCIDE2K();
+  return 0;
 }
 
 int testCIEDE2000() {

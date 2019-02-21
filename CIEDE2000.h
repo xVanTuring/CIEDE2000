@@ -28,8 +28,15 @@ struct LAB {
   /** Color-opponent b dimension */
   double b;
 };
+struct RGB {
+  unsigned char r;
+  unsigned char g;
+  unsigned char b;
+};
 /** Convenience definition for struct LAB */
 using LAB = struct LAB;
+
+using RGB = struct RGB;
 
 /***********************************************************************
  * Operations.
@@ -53,8 +60,8 @@ using LAB = struct LAB;
  * Delta-E difference between lab1 and lab2.
  */
 double CIEDE2000(const LAB &lab1, const LAB &lab2);
-void rgb2Lab(unsigned char R, unsigned char G, unsigned char B,
-                        double &l_s, double &a_s, double &b_s)  ;
+double CIEDE2000(const RGB &rgb1, const RGB &rgb2);
+void rgb2Lab(const RGB &rgb, LAB &lab);
 
 /***********************************************************************
  * Conversions.

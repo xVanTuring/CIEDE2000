@@ -19,7 +19,12 @@ constexpr double CIEDE2000::deg2Rad(const double deg) {
 constexpr double CIEDE2000::rad2Deg(const double rad) {
   return ((180.0 / M_PI) * rad);
 }
-
+double CIEDE2000::CIEDE2000(const RGB &rgb1, const RGB &rgb2) {
+  LAB lab1, lab2;
+  CIEDE2000::rgb2Lab(rgb1, lab1);
+  CIEDE2000::rgb2Lab(rgb2, lab2);
+  return CIEDE2000::CIEDE2000(lab1, lab2);
+}
 double CIEDE2000::CIEDE2000(const LAB &lab1, const LAB &lab2) {
   /*
    * "For these and all other numerical/graphical 􏰀delta E00 value
@@ -157,11 +162,10 @@ std::ostream &operator<<(std::ostream &s, const CIEDE2000::LAB &labColor) {
   return (s << "CIELAB(" << labColor.l << "," << labColor.a << "," << labColor.b
             << ")");
 }
-void CIEDE2000::rgb2Lab(unsigned char R, unsigned char G, unsigned char B,
-                        double &l_s, double &a_s, double &b_s) {
-  double var_R = R / 255.0;
-  double var_G = G / 255.0;
-  double var_B = B / 255.0;
+void CIEDE2000::rgb2Lab(const RGB &rgb, LAB &lab) {
+  double var_R = rgb.r / 255.0;
+  double var_G = rgb.g / 255.0;
+  double var_B = rgb.b / 255.0;
 
   if (var_R > 0.04045)
     var_R = pow(((var_R + 0.055) / 1.055), 2.4);
@@ -185,7 +189,7 @@ void CIEDE2000::rgb2Lab(unsigned char R, unsigned char G, unsigned char B,
   double Y = var_R * 0.2126 + var_G * 0.7152 + var_B * 0.0722;
   double Z = var_R * 0.0193 + var_G * 0.1192 + var_B * 0.9505;
 
-  double var_X = X / 95.047;  // ref_X =  95.047   Observer= 2°, Illuminant= D65
+  double var_X = X / 95.047; // ref_X =  95.047   Observer= 2°, Illuminant= D65
   double var_Y = Y / 100.000; // ref_Y = 100.000
   double var_Z = Z / 108.883; // ref_Z = 108.883
 
@@ -202,7 +206,7 @@ void CIEDE2000::rgb2Lab(unsigned char R, unsigned char G, unsigned char B,
   else
     var_Z = (7.787 * var_Z) + (16. / 116.);
 
-  l_s = (116. * var_Y) - 16.;
-  a_s = 500. * (var_X - var_Y);
-  b_s = 200. * (var_Y - var_Z);
+  lab.l = (116. * var_Y) - 16.;
+  lab.a = 500. * (var_X - var_Y);
+  lab.b = 200. * (var_Y - var_Z);
 }
